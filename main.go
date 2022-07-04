@@ -5,10 +5,13 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	userID := chi.URLParam(r, "userID")
+	w.Write([]byte(fmt.Sprintf("hi %v", userID)))
 	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1>")
 }
 
@@ -27,11 +30,20 @@ func faqHandler(w http.ResponseWriter, r *http.Request) {
 	`)
 }
 
+func userHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	userID := chi.URLParam(r, "userID")
+	w.Write([]byte(fmt.Sprintf("hi %v", userID)))
+}
+
 func main() {
 	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 	r.Get("/", homeHandler)
 	r.Get("/contact", contactHandler)
 	r.Get("/faq", faqHandler)
+	r.Get("/users/{userID}", userHandler)
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	})
