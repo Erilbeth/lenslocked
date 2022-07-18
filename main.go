@@ -12,13 +12,17 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	userID := chi.URLParam(r, "userID")
 	w.Write([]byte(fmt.Sprintf("hi %v", userID)))
-	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1>")
+	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1><p>")
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
+	bio := `<script>alert("Haha, you have been h4x0r3d!");</script>`
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(w, `<h1>Contact Page</h1><p>To get in touch, email me at <a 
 	href=\"mailto:huseyinozantemel@gmail.com\">huseyinozantemel@gmail.com</a>`)
+	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1><p>Bio:"+bio+"</p>")
+
 }
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
